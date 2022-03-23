@@ -22,11 +22,11 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
-      - name: join test
+      - name: head commit message
         env:
-          HEAD_COMMIT: ${{ toJson(github.head_commit.message) }}
+          HEAD_COMMIT: ${{ toJson(github.event.head_commit.message) }}
         run: echo "$HEAD_COMMIT"
       - name: true or false
         env:
-          RESULT: ${{ toJson(contains(github.head_commit.message, '#skip')) }}
+          RESULT: ${{ toJson(contains(github.event.head_commit.message, '#skip')) }}
         run: echo "$RESULT"
