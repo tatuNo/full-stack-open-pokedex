@@ -28,5 +28,5 @@ jobs:
         run: echo "$MESSAGE"
       - name: true or false
         env:
-          RESULT: ${{ toJson(contains(join(github.event.commits.*.message)), '#skip') }}
+          RESULT: ${{ toJson(contains(join(github.event.commits.*.message), '#skip')) }}
         run: echo "$RESULT"
