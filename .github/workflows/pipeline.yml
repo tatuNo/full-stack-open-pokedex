@@ -34,12 +34,28 @@ jobs:
         if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "pokedex-tatuno"
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
           healthcheck: "https://pokedex-tatuno.herokuapp.com/health"
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
+      - name: build success notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          text: A new version of Pokedex deployed!
+          description: to https://pokedex-tatuno.herokuapp.com/ by ${{ github.event.head_commit.committer.username }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: build failure notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          severity: error
+          text: Pokedex build failed.
+          description: commit ${{ github.event.head_commit.url }} by ${{ github.event.head_commit.committer.username }} broke the build :(
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
