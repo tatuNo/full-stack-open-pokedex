@@ -1,3 +1,7 @@
+# Exercises 20 & 21
+
+https://github.com/tatuNo/blog-app
+
 # Full Stack open CI/CD
 
 This repository is used for the CI/CD module of the Full stack open course
